@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="101"></property>
+		<property name="firstName" value="Jane"></property>
+		<property name="lastName" value="Doe"></property>
+		<property name="nic" value="9041464534V"></property>
+		<property name="designation" value="Software Engineer"></property>
+		<property name="mobileNumber" value="0776433942"></property>
+		<property name="departmentId" value="1"></property>
+		<property name="startDate" value="2016-12-12"></property>
+	</bean>
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="102"></property>
+		<property name="firstName" value="William"></property>
+		<property name="lastName" value="Defoe"></property>
+		<property name="nic" value="198515110631"></property>
+		<property name="designation" value="Accountant"></property>
+		<property name="mobileNumber" value="0776427942"></property>
+		<property name="departmentId" value="5"></property>
+		<property name="startDate" value="2017-10-12"></property>
+	</bean>
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="103"></property>
+		<property name="firstName" value="Jack"></property>
+		<property name="lastName" value="Dee"></property>
+		<property name="nic" value="199855110631"></property>
+		<property name="designation" value="HR Manager"></property>
+		<property name="mobileNumber" value="0771933942"></property>
+		<property name="departmentId" value="6"></property>
+		<property name="startDate" value="2018-02-07"></property>
+	</bean>
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="104"></property>
+		<property name="firstName" value="Sandra"></property>
+		<property name="lastName" value="Rogers"></property>
+		<property name="nic" value="199835110631"></property>
+		<property name="designation" value="Business Analyst"></property>
+		<property name="mobileNumber" value="0718433942"></property>
+		<property name="departmentId" value="3"></property>
+		<property name="startDate" value="2021-07-01"></property>
+	</bean>
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="105"></property>
+		<property name="firstName" value="Steve"></property>
+		<property name="lastName" value="Casey"></property>
+		<property name="nic" value="26041453434V"></property>
+		<property name="designation" value="System Engineer"></property>
+		<property name="mobileNumber" value="0768433942"></property>
+		<property name="departmentId" value="4"></property>
+		<property name="startDate" value="2019-09-04"></property>
+	</bean>
+
+	<bean class="com.thiranya.app.Employee">
+		<property name="employeeId" value="106"></property>
+		<property name="firstName" value="Michelle"></property>
+		<property name="lastName" value="Michaels"></property>
+		<property name="nic" value="9041741534V"></property>
+		<property name="designation" value="COO"></property>
+		<property name="mobileNumber" value="0702433942"></property>
+		<property name="departmentId" value="2"></property>
+		<property name="startDate" value="2015-06-01"></property>
+	</bean>
+
+</beans>
