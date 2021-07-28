@@ -1,8 +1,7 @@
 package com.thiranya.app.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
 import com.thiranya.app.model.Department;
+import org.springframework.data.repository.CrudRepository;
 
 public interface DepartmentRepository extends CrudRepository<Department, Integer> {
 

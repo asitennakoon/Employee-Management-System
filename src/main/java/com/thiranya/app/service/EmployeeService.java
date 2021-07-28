@@ -1,66 +1,66 @@
 package com.thiranya.app.service;
 
-import java.util.List;
-import org.springframework.stereotype.Service;
-
 import com.thiranya.app.model.Department;
 import com.thiranya.app.model.Department.DepartmentName;
 import com.thiranya.app.model.Employee;
 import com.thiranya.app.model.EmployeePrimaryKey;
 import com.thiranya.app.repository.DepartmentRepository;
 import com.thiranya.app.repository.EmployeeRepository;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
-	EmployeeRepository employeeRepo;
-	DepartmentRepository departmentRepo;
 
-	public EmployeeService(EmployeeRepository employeeRepo, DepartmentRepository departmentRepo) {
-		this.employeeRepo = employeeRepo;
-		this.departmentRepo = departmentRepo;
-	}
+  EmployeeRepository employeeRepo;
+  DepartmentRepository departmentRepo;
 
-	public Employee findById(Integer employeeId, Integer departmentId) {
-		return employeeRepo.findByPrimaryKey(employeeId, departmentId);
-	}
+  public EmployeeService(EmployeeRepository employeeRepo, DepartmentRepository departmentRepo) {
+    this.employeeRepo = employeeRepo;
+    this.departmentRepo = departmentRepo;
+  }
 
-	public Iterable<Employee> getAllEmployees() {
-		return employeeRepo.findAll();
-	}
+  public Employee findById(Integer employeeId, Integer departmentId) {
+    return employeeRepo.findByPrimaryKey(employeeId, departmentId);
+  }
 
-	public List<Employee> nicStartWith90() {
-		return employeeRepo.nicStartWith90();
-	}
+  public Iterable<Employee> getAllEmployees() {
+    return employeeRepo.findAll();
+  }
 
-	public List<Employee> workingForFiveYears() {
-		return employeeRepo.workingForFiveYears();
-	}
+  public List<Employee> nicStartWith90() {
+    return employeeRepo.nicStartWith90();
+  }
 
-	public Employee addEmployee(Employee employee) {
-		Department department = new Department(employee.getDepartmentId(),
-				DepartmentName.values()[employee.getDepartmentId() - 1]);
+  public List<Employee> workingForFiveYears() {
+    return employeeRepo.workingForFiveYears();
+  }
 
-		employee.setDepartment(department);
-		return employeeRepo.save(employee);
-	}
+  public Employee addEmployee(Employee employee) {
+    Department department = new Department(employee.getDepartmentId(),
+        DepartmentName.values()[employee.getDepartmentId() - 1]);
 
-	public Employee viewEmployeeByName(String employeeName) {
-		return employeeRepo.viewEmployeeByName(employeeName);
-	}
+    employee.setDepartment(department);
+    return employeeRepo.save(employee);
+  }
 
-	public List<Employee> getEmployeesByDepartmentName(Department.DepartmentName departmentName) {
-		return employeeRepo.getEmployeesByDepartmentName(departmentName.toString());
-	}
+  public Employee viewEmployeeByName(String employeeName) {
+    return employeeRepo.viewEmployeeByName(employeeName);
+  }
 
-	public Employee editEmployee(Employee employee) {
-		Employee outdatedEmployee = findById(employee.getEmployeeId(), employee.getDepartmentId());
+  public List<Employee> getEmployeesByDepartmentName(Department.DepartmentName departmentName) {
+    return employeeRepo.getEmployeesByDepartmentName(departmentName.toString());
+  }
 
-		employeeRepo.delete(outdatedEmployee);
-		return addEmployee(employee);
-	}
+  public Employee editEmployee(Employee employee) {
+    Employee outdatedEmployee = findById(employee.getEmployeeId(), employee.getDepartmentId());
 
-	public void deleteEmployee(Integer employeeId, Integer departmentId) {
-		employeeRepo.deleteById(new EmployeePrimaryKey(employeeId, departmentId));
-	}
+    employeeRepo.delete(outdatedEmployee);
+    return addEmployee(employee);
+  }
+
+  public void deleteEmployee(Integer employeeId, Integer departmentId) {
+    employeeRepo.deleteById(new EmployeePrimaryKey(employeeId, departmentId));
+  }
 
 }
