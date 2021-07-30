@@ -1,4 +1,2 @@
-INSERT INTO department(department_Id, department_Name)
+INSERT INTO department(department_id, department_name)
 VALUES('1','ENGINEERING'),('2','IMPLEMENTATION'),('3','SUPPORT'),('4','BS'),('5','MARKETING'),('6','HR');
-
-INSERT INTO employee(employee_Id, department_Id, first_Name, last_Name, nic, designation, mobile_Number, start_Date, department_fk) VALUES('101','1','Jane','Doe','9041464534V','Software Engineer','0776433942','2016-12-12','1'),('102','5','William','Defoe','198515110631','Accountant','0776427942','2017-10-12','5'),('103','6','Jack','Dee','199855110631','HR Manager','0771933942','2018-02-07','6'),('104','3','Sandra','Rogers','199835110631','Business Analyst','0718433942','2021-07-01','3'),('105','4','Steve','Casey','26041453434V','System Engineer','0768433942','2019-09-04','4'),('106','1','Michelle','Michaels','9041741534V','COO','0702433942','2015-06-01','1');

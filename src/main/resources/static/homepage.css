@@ -1,0 +1,20 @@
+div {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 2px;
+}
+
+#container {
+  border: none;
+  margin: auto;
+  width: 50%;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+.center {
+  transform: translate(250px);
+}
