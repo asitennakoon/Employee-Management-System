@@ -1,4 +1,4 @@
-package com.thiranya.ems.model;
+package com.thiranya.ems.repository.model;
 
 import java.util.List;
 import javax.persistence.Column;
@@ -25,30 +25,30 @@ public class DepartmentData {
 
     @Id
     @GeneratedValue
-    @Column(nullable = false, unique = true)
-    private int department_id;
+    @Column(name = "department_id", nullable = false, unique = true)
+    private int departmentId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
-    private DepartmentName department_name;
+    @Column(name = "department_name", nullable = false, unique = true)
+    private DepartmentName departmentName;
 
     @ManyToMany(mappedBy = "departments")
     private List<EmployeeData> employees;
 
-    public int getDepartment_id() {
-        return department_id;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment_id(int department_id) {
-        this.department_id = department_id;
+    public void setDepartmentId(int department_id) {
+        this.departmentId = department_id;
     }
 
-    public DepartmentName getDepartment_name() {
-        return department_name;
+    public DepartmentName getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment_name(DepartmentName department_name) {
-        this.department_name = department_name;
+    public void setDepartmentName(DepartmentName department_name) {
+        this.departmentName = department_name;
     }
 
     public List<EmployeeData> getEmployees() {

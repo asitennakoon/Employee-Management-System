@@ -1,9 +1,7 @@
 package com.thiranya.ems.model;
 
 import java.time.LocalDate;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Employee {
 
     private int employeeId;

@@ -1,4 +1,4 @@
-package com.thiranya.ems.model;
+package com.thiranya.ems.repository.model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,14 +17,14 @@ public class EmployeeData {
 
     @Id
     @GeneratedValue
-    @Column(nullable = false, unique = true)
-    private int employee_id;
+    @Column(name = "employee_id", nullable = false, unique = true)
+    private int employeeId;
 
-    @Column(length = 25, nullable = false)
-    private String first_name;
+    @Column(name = "first_name", length = 25, nullable = false)
+    private String firstName;
 
-    @Column(length = 25, nullable = false)
-    private String last_name;
+    @Column(name = "last_name", length = 25, nullable = false)
+    private String lastName;
 
     @Column(nullable = false, unique = true)
     private String nic;
@@ -32,11 +32,11 @@ public class EmployeeData {
     @Column(length = 25, nullable = false)
     private String designation;
 
-    @Column(nullable = false, unique = true)
-    private String mobile_number;
+    @Column(name = "mobile_number", nullable = false, unique = true)
+    private String mobileNumber;
 
-    @Column(nullable = false)
-    private LocalDate start_date;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 
     @ManyToMany
     @JoinTable(
@@ -46,28 +46,28 @@ public class EmployeeData {
     )
     private List<DepartmentData> departments;
 
-    public int getEmployee_id() {
-        return employee_id;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(int employee_id) {
+        this.employeeId = employee_id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
     public String getNic() {
@@ -86,20 +86,20 @@ public class EmployeeData {
         this.designation = designation;
     }
 
-    public String getMobile_number() {
-        return mobile_number;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
-    public void setMobile_number(String mobile_number) {
-        this.mobile_number = mobile_number;
+    public void setMobileNumber(String mobile_number) {
+        this.mobileNumber = mobile_number;
     }
 
-    public LocalDate getStart_date() {
-        return start_date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setStart_date(LocalDate start_date) {
-        this.start_date = start_date;
+    public void setStartDate(LocalDate start_date) {
+        this.startDate = start_date;
     }
 
     public List<DepartmentData> getDepartments() {

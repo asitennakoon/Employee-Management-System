@@ -1,49 +1,48 @@
 package com.thiranya.ems.service;
 
-import com.thiranya.ems.model.DepartmentData.DepartmentName;
-import com.thiranya.ems.model.EmployeeData;
-import com.thiranya.ems.repository.DepartmentRepository;
 import com.thiranya.ems.repository.EmployeeRepository;
+import com.thiranya.ems.repository.model.DepartmentData.DepartmentName;
+import com.thiranya.ems.repository.model.EmployeeData;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepo;
-    private final DepartmentRepository departmentRepo;
 
-    public EmployeeService(EmployeeRepository employeeRepo, DepartmentRepository departmentRepo) {
+    public EmployeeService(EmployeeRepository employeeRepo) {
         this.employeeRepo = employeeRepo;
-        this.departmentRepo = departmentRepo;
     }
 
-    public Iterable<EmployeeData> nicStartWith90(String prefix) {
+    public List<EmployeeData> nicStartWith90(String prefix) {
         return employeeRepo.findByNicIsStartingWith(prefix);
     }
 
-    public Iterable<EmployeeData> workingForFiveYears(int year) {
+    public List<EmployeeData> workingForFiveYears(int year) {
         LocalDate currentDate = LocalDate.now();
 
-        return employeeRepo.findByStart_dateBefore(currentDate.minusYears(year));
+        return employeeRepo.findByStartDateBefore(currentDate.minusYears(year));
     }
 
     public EmployeeData addEmployee(EmployeeData employee) {
         return employeeRepo.save(employee);
     }
 
-    public Iterable<EmployeeData> viewEmployeesByName(String employeeName) {
-        return employeeRepo.findByFirst_nameOrLast_name(employeeName, employeeName);
+    public List<EmployeeData> viewEmployeesByName(String employeeName) {
+        return employeeRepo.findByFirstNameOrLastName(employeeName, employeeName);
     }
 
-    public Iterable<EmployeeData> getEmployeesByDepartmentName(DepartmentName departmentName) {
+    public List<EmployeeData> getEmployeesByDepartmentName(DepartmentName departmentName) {
         return employeeRepo.getEmployeesByDepartmentName(departmentName.toString());
     }
 
     public EmployeeData editEmployee(EmployeeData employee) {
-        employeeRepo.updateEmployee(employee.getFirst_name(), employee.getLast_name(),
-                employee.getMobile_number(), employee.getDesignation(), employee.getEmployee_id());
-        return employeeRepo.findById(employee.getEmployee_id()).orElse(null);
+        employeeRepo.updateEmployee(employee.getFirstName(), employee.getLastName(),
+                employee.getMobileNumber(), employee.getDesignation(), employee.getEmployeeId());
+        return employeeRepo.findById(employee.getEmployeeId()).orElse(null);
     }
 
     public void deleteEmployee(Integer employeeId) {
@@ -54,6 +53,10 @@ public class EmployeeService {
         if (employeeRepo.findEntry(employeeId, departmentId) == 0) {
             employeeRepo.insertEmpDepEntry(employeeId, departmentId);
         }
+    }
+
+    public Optional<EmployeeData> findById(Integer employeeId) {
+        return employeeRepo.findById(employeeId);
     }
 
 }

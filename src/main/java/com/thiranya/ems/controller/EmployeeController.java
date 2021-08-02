@@ -1,34 +1,27 @@
 package com.thiranya.ems.controller;
 
-import com.thiranya.ems.model.DepartmentData;
 import com.thiranya.ems.model.Employee;
-import com.thiranya.ems.model.EmployeeData;
+import com.thiranya.ems.repository.model.DepartmentData;
+import com.thiranya.ems.repository.model.EmployeeData;
 import com.thiranya.ems.service.EmployeeService;
 import java.util.Collections;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class EmployeeController {
 
-    private static final String VIEW = "results";
-    private static final String RESPONSE = "employees";
-    private static final String TITLE = "title";
     private final EmployeeService employeeService;
-    private final DtoConverter dtoConverter;
+    private final EmployeeConverter employeeConverter;
 
-    public EmployeeController(EmployeeService employeeService, DtoConverter dtoConverter) {
+    public EmployeeController(EmployeeService employeeService,
+            EmployeeConverter employeeConverter) {
         this.employeeService = employeeService;
-        this.dtoConverter = dtoConverter;
-    }
-
-    @RequestMapping("")
-    public String renderHomepage() {
-        return "homepage";
+        this.employeeConverter = employeeConverter;
     }
 
     @GetMapping("employees")
@@ -37,7 +30,7 @@ public class EmployeeController {
             @RequestParam(required = false) DepartmentData.DepartmentName department,
             @RequestParam(required = false) String condition,
             Model model) {
-        Iterable<EmployeeData> employees = Collections.emptyList();
+        List<EmployeeData> employees = Collections.emptyList();
         String title = "No entries found";
 
         if (name != null) {
@@ -54,39 +47,55 @@ public class EmployeeController {
             title = "Employees working for more than 5 years";
         }
 
-        model.addAttribute(RESPONSE, dtoConverter.convertIterableToDtoList(employees));
-        model.addAttribute(TITLE, title);
-        return VIEW;
+        model.addAttribute("employees", employeeConverter.convertToDtoList(employees));
+        model.addAttribute("title", title);
+        return "results";
     }
 
-    @PostMapping("")
+    @PostMapping("added")
     public String addEmployee(Employee employee, Model model) {
-        EmployeeData employeeData = dtoConverter.convertToEntity(employee);
+        EmployeeData employeeData = employeeConverter.convertToEntity(employee);
         EmployeeData addedEmployee = employeeService.addEmployee(employeeData);
 
-        employeeService.addEmpDepEntry(addedEmployee.getEmployee_id(), employee.getDepartmentId());
+        employeeService.addEmpDepEntry(addedEmployee.getEmployeeId(), employee.getDepartmentId());
 
-        Employee employeeDto = dtoConverter.convertToDto(addedEmployee);
-        Iterable<Employee> employees = Collections.singleton(employeeDto);
+        Employee employeeDto = employeeConverter.convertToDto(addedEmployee);
+        List<Employee> employees = Collections.singletonList(employeeDto);
 
-        model.addAttribute(RESPONSE, employees);
-        model.addAttribute(TITLE, employee.getFirstName() + " " + employee.getLastName());
-        return VIEW;
+        model.addAttribute("employees", employees);
+        model.addAttribute("title", employee.getFirstName() + " " + employee.getLastName());
+        return "results";
     }
 
-    @PostMapping("edited")
+    @GetMapping("edit")
+    public String getExistingEmployee(Integer employeeId, Model model) {
+        EmployeeData employeeData = employeeService.findById(employeeId).orElse(null);
+        Employee existingEmployeeDto = null;
+
+        if (employeeData != null) {
+            existingEmployeeDto = employeeConverter.convertToDto(employeeData);
+            model.addAttribute("title", "Updating info of " + existingEmployeeDto.getFirstName());
+        } else {
+            model.addAttribute("title", "Employee not found!");
+        }
+
+        model.addAttribute("employee", existingEmployeeDto);
+        return "update_form";
+    }
+
+    @PostMapping("updated")
     public String editEmployee(Employee employee, Model model) {
-        EmployeeData employeeData = dtoConverter.convertToEntity(employee);
+        EmployeeData employeeData = employeeConverter.convertToEntity(employee);
         EmployeeData editedEmployee = employeeService.editEmployee(employeeData);
 
-        employeeService.addEmpDepEntry(editedEmployee.getEmployee_id(), employee.getDepartmentId());
+        employeeService.addEmpDepEntry(editedEmployee.getEmployeeId(), employee.getDepartmentId());
 
-        Employee employeeDto = dtoConverter.convertToDto(editedEmployee);
-        Iterable<Employee> employees = Collections.singleton(employeeDto);
+        Employee employeeDto = employeeConverter.convertToDto(editedEmployee);
+        List<Employee> employees = Collections.singletonList(employeeDto);
 
-        model.addAttribute(RESPONSE, employees);
-        model.addAttribute(TITLE, "Updated info of " + editedEmployee.getFirst_name());
-        return VIEW;
+        model.addAttribute("employees", employees);
+        model.addAttribute("title", "Updated info of " + editedEmployee.getFirstName());
+        return "results";
     }
 
     @PostMapping("deleted")
