@@ -12,7 +12,6 @@
     <thead>
     <tr>
         <th>Employee ID</th>
-        <th>Department ID</th>
         <th>Full Name</th>
         <th>NIC</th>
         <th>Designation</th>
@@ -24,7 +23,6 @@
     <c:forEach items="${employees}" var="employee">
         <tr>
             <td>${employee.employeeId}</td>
-<%--            <td>${employee.departmentId}</td>--%>
             <td>${employee.firstName} ${employee.lastName}</td>
             <td>${employee.nic}</td>
             <td>${employee.designation}</td>

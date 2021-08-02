@@ -5,7 +5,6 @@ import com.thiranya.ems.model.Employee;
 import com.thiranya.ems.model.EmployeeData;
 import com.thiranya.ems.service.EmployeeService;
 import java.util.Collections;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +21,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final DtoConverter dtoConverter;
 
-    public EmployeeController(EmployeeService employeeService,
-            DtoConverter dtoConverter) {
+    public EmployeeController(EmployeeService employeeService, DtoConverter dtoConverter) {
         this.employeeService = employeeService;
         this.dtoConverter = dtoConverter;
     }
@@ -39,7 +37,7 @@ public class EmployeeController {
             @RequestParam(required = false) DepartmentData.DepartmentName department,
             @RequestParam(required = false) String condition,
             Model model) {
-        Iterable<Optional<EmployeeData>> employees = Collections.emptyList();
+        Iterable<EmployeeData> employees = Collections.emptyList();
         String title = "No entries found";
 
         if (name != null) {
@@ -49,25 +47,27 @@ public class EmployeeController {
             employees = employeeService.getEmployeesByDepartmentName(department);
             title = "Employees in " + department;
         } else if (condition.equals("nicStartWith90")) {
-            employees = employeeService.nicStartWith90();
+            employees = employeeService.nicStartWith90("90");
             title = "Employees whose NIC starts with 90";
         } else if (condition.equals("workingForFiveYears")) {
-            employees = employeeService.workingForFiveYears();
+            employees = employeeService.workingForFiveYears(5);
             title = "Employees working for more than 5 years";
         }
 
-        model.addAttribute(RESPONSE, employees);
+        model.addAttribute(RESPONSE, dtoConverter.convertIterableToDtoList(employees));
         model.addAttribute(TITLE, title);
         return VIEW;
     }
 
     @PostMapping("")
     public String addEmployee(Employee employee, Model model) {
-        System.out.println(employee.toString());
-        EmployeeData addedEmployee = employeeService.addEmployee(
-                dtoConverter.convertToEntity(employee));
-        Iterable<Employee> employees = Collections.singleton(
-                dtoConverter.convertToDto(addedEmployee));
+        EmployeeData employeeData = dtoConverter.convertToEntity(employee);
+        EmployeeData addedEmployee = employeeService.addEmployee(employeeData);
+
+        employeeService.addEmpDepEntry(addedEmployee.getEmployee_id(), employee.getDepartmentId());
+
+        Employee employeeDto = dtoConverter.convertToDto(addedEmployee);
+        Iterable<Employee> employees = Collections.singleton(employeeDto);
 
         model.addAttribute(RESPONSE, employees);
         model.addAttribute(TITLE, employee.getFirstName() + " " + employee.getLastName());
@@ -76,10 +76,13 @@ public class EmployeeController {
 
     @PostMapping("edited")
     public String editEmployee(Employee employee, Model model) {
-        EmployeeData editedEmployee = employeeService.editEmployee(
-                dtoConverter.convertToEntity(employee));
-        Iterable<Employee> employees = Collections.singleton(
-                dtoConverter.convertToDto(editedEmployee));
+        EmployeeData employeeData = dtoConverter.convertToEntity(employee);
+        EmployeeData editedEmployee = employeeService.editEmployee(employeeData);
+
+        employeeService.addEmpDepEntry(editedEmployee.getEmployee_id(), employee.getDepartmentId());
+
+        Employee employeeDto = dtoConverter.convertToDto(editedEmployee);
+        Iterable<Employee> employees = Collections.singleton(employeeDto);
 
         model.addAttribute(RESPONSE, employees);
         model.addAttribute(TITLE, "Updated info of " + editedEmployee.getFirst_name());
@@ -87,8 +90,7 @@ public class EmployeeController {
     }
 
     @PostMapping("deleted")
-    public String deleteEmployee(
-            @RequestParam Integer employeeId, Model model) {
+    public String deleteEmployee(@RequestParam Integer employeeId, Model model) {
         employeeService.deleteEmployee(employeeId);
         return "homepage";
     }

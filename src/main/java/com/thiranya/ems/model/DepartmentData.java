@@ -7,7 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -32,8 +32,8 @@ public class DepartmentData {
     @Column(nullable = false, unique = true)
     private DepartmentName department_name;
 
-    @OneToMany(mappedBy = "department")
-    private List<EmployeeDepartmentData> employees;
+    @ManyToMany(mappedBy = "departments")
+    private List<EmployeeData> employees;
 
     public int getDepartment_id() {
         return department_id;
@@ -51,11 +51,11 @@ public class DepartmentData {
         this.department_name = department_name;
     }
 
-    public List<EmployeeDepartmentData> getEmployees() {
+    public List<EmployeeData> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<EmployeeDepartmentData> employees) {
+    public void setEmployees(List<EmployeeData> employees) {
         this.employees = employees;
     }
 }

@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -36,8 +38,13 @@ public class EmployeeData {
     @Column(nullable = false)
     private LocalDate start_date;
 
-    @OneToMany(mappedBy = "employee")
-    private List<EmployeeDepartmentData> departments;
+    @ManyToMany
+    @JoinTable(
+            name = "employee_department",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    private List<DepartmentData> departments;
 
     public int getEmployee_id() {
         return employee_id;
@@ -95,11 +102,11 @@ public class EmployeeData {
         this.start_date = start_date;
     }
 
-    public List<EmployeeDepartmentData> getDepartments() {
+    public List<DepartmentData> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(List<EmployeeDepartmentData> departments) {
+    public void setDepartments(List<DepartmentData> departments) {
         this.departments = departments;
     }
 }
